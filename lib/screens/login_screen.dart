@@ -27,6 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void handleSubmit() async {
+    if (email == '' || password == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter an email and password'),
+      ));
+      return;
+    }
+
     final payload = jsonEncode({'email': email, 'password': password});
     await auth.signIn(context, payload);
   }

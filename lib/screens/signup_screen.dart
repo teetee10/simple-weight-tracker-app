@@ -30,7 +30,14 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void handleSubmit() async {
-    final payload = jsonEncode({'email': email, 'password': password, 'name': name}); 
+    if (email == '' || password == '' || name == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter an email and password'),
+      ));
+      return;
+    }
+
+    final payload = jsonEncode({'email': email, 'password': password, 'name': name});
     await auth.signUp(context, payload);
   }
 

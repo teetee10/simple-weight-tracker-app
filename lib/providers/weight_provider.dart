@@ -41,6 +41,9 @@ class WeightProvider extends ChangeNotifier {
     try {
       final token = getToken(context);
       final weight = await WeightApi.saveWeight(payload, token);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Added weight'),
+      ));
       addToWeightHistory(weight);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

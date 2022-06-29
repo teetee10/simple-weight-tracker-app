@@ -15,6 +15,7 @@ class AddWeightScreen extends StatefulWidget {
 
 class _AddWeightScreenState extends State<AddWeightScreen> {
   String weight = '';
+  TextEditingController textarea = TextEditingController();
   dynamic userWeight;
 
   @override
@@ -24,9 +25,16 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
   }
 
   void handleSubmit() async {
+    if (weight == '') {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please enter a weight'),
+      ));
+      return;
+    }
     final time = DateTime.now().toString();
     final payload = jsonEncode({'weight': weight, 'time': time});
     await userWeight.addWeight(context, payload);
+    textarea.clear();
   }
 
   @override
@@ -48,6 +56,7 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
           child: Form(
             child: ListView(padding: const EdgeInsets.all(20.0), children: <Widget>[
               TextField(
+                controller: textarea,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(labelText: 'Weight in (cm)'),
                 onChanged: (value) {
