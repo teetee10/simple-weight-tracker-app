@@ -37,6 +37,22 @@ class WeightProvider extends ChangeNotifier {
     }
   }
 
+  void updateWeightHistory(context, payload) async {
+   try {
+      final token = getToken(context);
+      final weight = await WeightApi.updateWeight(payload, token);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('updated weight'),
+      ));
+      addToWeightHistory(weight);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
+  
+
   void addWeight(context, payload) async {
     try {
       final token = getToken(context);

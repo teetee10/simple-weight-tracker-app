@@ -22,15 +22,26 @@ class WeightApi {
     throw Exception(responseBody['message']);
   }
 
+  static Future<Weight> updateWeight(encodedParams, token) async {
+    final response = await http.post(Uri.parse(EnvConfig.API_BASE_URL + 'weight/update'),
+        headers: {'Content-Type': 'application/json', 'authorization': token},
+        body: encodedParams);
+
+    final responseBody = jsonDecode(response.body);
+    if (responseBody['success']) {
+      return Weight.fromJson(responseBody['data']);
+    }
+    throw Exception(responseBody['message']);
+  }
+
   static Future<List<Weight>> getWeightHistory(token) async {
     List<Weight> weightHistory = [];
     final response = await http.get(Uri.parse(EnvConfig.API_BASE_URL + 'weight/history'),
         headers: {'Content-Type': 'application/json', 'authorization': token});
     final responseBody = jsonDecode(response.body);
-    if (responseBody['success']) {
+    if (responseBody['success'] && responseBody['data'] != null) {
       responseBody['data'].map((e) => weightHistory.add(Weight.fromJson(e))).toList();
-      return weightHistory;
     }
-    throw Exception(responseBody['message']);
+    return weightHistory;
   }
 }

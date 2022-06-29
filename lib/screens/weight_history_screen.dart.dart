@@ -46,18 +46,10 @@ class _WeightHistoryScreenState extends State<WeightHistoryScreen> {
         body: ListView.separated(
           itemCount: weightHistory.length,
           separatorBuilder: (context, index) => const Divider(),
-          itemBuilder: (_, index) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: SizedBox(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('${weightHistory[index].weight}cm'),
-                    Text(formatDateFromString(weightHistory[index].time)),
-                  ],
-                ),
-              )),
+          itemBuilder: (_, index) => ListTile(
+            title: Text('Record - ${weightHistory[index].weight}cm'),
+            trailing: Text(formatDateFromString(weightHistory[index].time)),
+          ),
         ));
   }
 }

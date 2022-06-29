@@ -13,20 +13,23 @@ class AuthProvider extends ChangeNotifier {
 
   User get getUser => user;
   bool get getIsAuthenticated => isAuthenticated;
-  AuthProvider({required this.storage}){
+  AuthProvider({required this.storage}) {
     _loadFromPrefs();
   }
 
-  void _loadFromPrefs() async {
-    Map<String, dynamic> userJson = jsonDecode(storage.getString('user')!);
-    user = User.fromJson(userJson);
-    isAuthenticated = storage.getBool('isAuthenticated')!;
+  void _loadFromPrefs() {
+    final String? storedUser = storage.getString('user') ?? null; 
+    if (storedUser != null) {
+      Map<String, dynamic> userJson = jsonDecode(storedUser);
+      user = User.fromJson(userJson);
+    }
+    isAuthenticated = storage.getBool('isAuthenticated') ?? false;
     notifyListeners();
   }
 
-  void _saveToPrefs() async {
-    String userString = jsonEncode(user);
-    storage.setString('user', userString);
+  void _saveToPrefs() {
+    final String? userString = jsonEncode(user);
+    if (userString != null) storage.setString('user', userString);
     storage.setBool('isAuthenticated', isAuthenticated);
   }
 
