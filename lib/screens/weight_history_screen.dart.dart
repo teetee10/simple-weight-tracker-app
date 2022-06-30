@@ -6,18 +6,22 @@ import '../models/weight_model.dart';
 import '../providers/weight_provider.dart';
 
 class WeightHistoryScreen extends StatefulWidget {
-  WeightHistoryScreen({Key? key}) : super(key: key);
+  const WeightHistoryScreen({Key? key}) : super(key: key);
 
   @override
   State<WeightHistoryScreen> createState() => _WeightHistoryScreenState();
 }
 
 class _WeightHistoryScreenState extends State<WeightHistoryScreen> {
+  dynamic userWeight;
+
   @override
   void initState() {
+    userWeight = Provider.of<WeightProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userWeight.fetchWeightHistory(context);
+    });
     super.initState();
-    final userWeightHistory = Provider.of<WeightProvider>(context, listen: false);
-    userWeightHistory.fetchWeightHistory(context);
   }
 
   String formatDateFromString(date) {

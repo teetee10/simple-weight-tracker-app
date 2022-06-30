@@ -38,7 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
 
     final payload = jsonEncode({'email': email, 'password': password, 'name': name});
-    await auth.signUp(context, payload);
+    await auth.userSignup(context, payload);
   }
 
   @override

@@ -1,18 +1,12 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
-import '../../env_config.dart';
+import '../mixin/http_middleware.dart';
 import '../models/user_model.dart';
 
-class UserApi {
-  UserApi._();
+class UserApi extends HttpMiddleware {
 
-  static final instance = UserApi._();
-
-  static Future<User> userLogin(encodedParams) async {
-    final response = await http.post(Uri.parse(EnvConfig.API_BASE_URL + 'auth/login'),
-        headers: {'Content-Type': 'application/json'}, body: encodedParams);
+  Future<User> login(encodedParams) async {
+    final response = await asPost('auth/login', encodedParams);
     final responseBody = jsonDecode(response.body);
     if (responseBody['success']) {
       return User.fromJson(responseBody['data']);
@@ -20,9 +14,8 @@ class UserApi {
     throw Exception(responseBody['message']);
   }
 
-  static Future<User> userSignup(encodedParams) async {
-    final response = await http.post(Uri.parse(EnvConfig.API_BASE_URL + 'auth/signup'),
-        headers: {'Content-Type': 'application/json'}, body: encodedParams);
+  Future<User> signup(encodedParams) async {
+    final response = await asPost('auth/signup', encodedParams);
     final responseBody = jsonDecode(response.body);
     if (responseBody['success']) {
       return User.fromJson(responseBody['data']);

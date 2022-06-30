@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracker/api/user_api.dart';
 import 'package:tracker/providers/auth_provider.dart';
 import 'package:tracker/providers/weight_provider.dart';
 import 'package:tracker/router.dart';
 import 'package:tracker/screens/home_screen.dart';
 
+import 'api/weight_api.dart';
+import 'transforms/init_store.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences _pref = await SharedPreferences.getInstance();
+  await StoreInit.init();
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => AuthProvider(storage: _pref)),
-    ChangeNotifierProvider(create: (_) => WeightProvider()),
+    ChangeNotifierProvider(
+        create: (_) => AuthProvider(storage: StoreInit.instance, api: UserApi())),
+    ChangeNotifierProvider(
+        create: (_) => WeightProvider(storage: StoreInit.instance, api: WeightApi())),
   ], child: const MyApp()));
 }
 

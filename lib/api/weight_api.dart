@@ -1,20 +1,12 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:tracker/models/weight_model.dart';
 
-import '../../env_config.dart';
+import '../mixin/http_middleware.dart';
 
-class WeightApi {
-  WeightApi._();
-
-  static final instance = WeightApi._();
-
-  static Future<Weight> saveWeight(encodedParams, token) async {
-    final response = await http.post(Uri.parse(EnvConfig.API_BASE_URL + 'weight/add'),
-        headers: {'Content-Type': 'application/json', 'authorization': token},
-        body: encodedParams);
-
+class WeightApi extends HttpMiddleware {
+  Future<Weight> saveWeight(encodedParams) async {
+    final response = await asPost('weight/add', encodedParams);
     final responseBody = jsonDecode(response.body);
     if (responseBody['success']) {
       return Weight.fromJson(responseBody['data']);
@@ -22,11 +14,8 @@ class WeightApi {
     throw Exception(responseBody['message']);
   }
 
-  static Future<Weight> updateWeight(encodedParams, token) async {
-    final response = await http.post(Uri.parse(EnvConfig.API_BASE_URL + 'weight/update'),
-        headers: {'Content-Type': 'application/json', 'authorization': token},
-        body: encodedParams);
-
+  Future<Weight> updateWeight(encodedParams) async {
+    final response = await asPost('weight/update', encodedParams);
     final responseBody = jsonDecode(response.body);
     if (responseBody['success']) {
       return Weight.fromJson(responseBody['data']);
@@ -34,10 +23,9 @@ class WeightApi {
     throw Exception(responseBody['message']);
   }
 
-  static Future<List<Weight>> getWeightHistory(token) async {
+  Future<List<Weight>> getWeightHistory() async {
     List<Weight> weightHistory = [];
-    final response = await http.get(Uri.parse(EnvConfig.API_BASE_URL + 'weight/history'),
-        headers: {'Content-Type': 'application/json', 'authorization': token});
+    final response = await asGet('weight/history');
     final responseBody = jsonDecode(response.body);
     if (responseBody['success'] && responseBody['data'] != null) {
       responseBody['data'].map((e) => weightHistory.add(Weight.fromJson(e))).toList();

@@ -1,42 +1,42 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/user_api.dart';
 import '../models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
-  bool isAuthenticated = false;
-  late SharedPreferences storage;
-  late User user;
+  final storage;
+  final api;
 
-  User get getUser => user;
+  User? user;
+  bool isAuthenticated = false;
+  User? get getUser => user;
   bool get getIsAuthenticated => isAuthenticated;
-  AuthProvider({required this.storage}) {
+
+  AuthProvider({this.storage, this.api}) {
     _loadFromPrefs();
   }
 
   void _loadFromPrefs() {
-    final String? storedUser = storage.getString('user') ?? null; 
-    if (storedUser != null) {
-      Map<String, dynamic> userJson = jsonDecode(storedUser);
+    var check = storage?.containsKey('user') ?? false;
+    if (check) {
+      Map<String, dynamic> userJson = jsonDecode(storage?.getString('user'));
       user = User.fromJson(userJson);
     }
-    isAuthenticated = storage.getBool('isAuthenticated') ?? false;
+    isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
     notifyListeners();
   }
 
   void _saveToPrefs() {
     final String? userString = jsonEncode(user);
-    if (userString != null) storage.setString('user', userString);
-    storage.setBool('isAuthenticated', isAuthenticated);
+    if (userString != null) storage?.setString('user', userString);
+    storage?.setBool('isAuthenticated', isAuthenticated);
   }
 
-  void signIn(context, payload) async {
+  void userSignIn(context, payload) async {
     try {
-      final user = await UserApi.userLogin(payload);
-      this.user = user;
+      final response = await api.login(payload);
+      user = response;
       isAuthenticated = true;
       _saveToPrefs();
       notifyListeners();
@@ -47,10 +47,10 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void signUp(context, payload) async {
+  void userSignup(context, payload) async {
     try {
-      final user = await UserApi.userSignup(payload);
-      this.user = user;
+      final response = await api.signup(payload);
+      user = response;
       isAuthenticated = true;
       notifyListeners();
     } catch (e) {

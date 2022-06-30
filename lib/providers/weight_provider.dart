@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/providers/auth_provider.dart';
 
-import '../api/weight_api.dart';
 import '../models/weight_model.dart';
 
 class WeightProvider extends ChangeNotifier {
+  final storage;
+  final api;
+
   List<Weight> weightHistory = [];
   List<Weight> get getWeightHistory => weightHistory;
+
+  WeightProvider({this.storage, this.api});
 
   void setWeightHistory(List<Weight> weight) {
     weightHistory = weight;
@@ -19,16 +23,9 @@ class WeightProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-// refactor -> utils
-  String getToken(context) {
-    final userProvider = Provider.of<AuthProvider>(context, listen: false);
-    return 'Bearer ${userProvider.user.token}';
-  }
-
   void fetchWeightHistory(context) async {
     try {
-      final token = getToken(context);
-      final response = await WeightApi.getWeightHistory(token);
+      final response = await api.getWeightHistory();
       setWeightHistory(response);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -38,9 +35,8 @@ class WeightProvider extends ChangeNotifier {
   }
 
   void updateWeightHistory(context, payload) async {
-   try {
-      final token = getToken(context);
-      final weight = await WeightApi.updateWeight(payload, token);
+    try {
+      final weight = await api.updateWeight(payload);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('updated weight'),
       ));
@@ -51,12 +47,10 @@ class WeightProvider extends ChangeNotifier {
       ));
     }
   }
-  
 
   void addWeight(context, payload) async {
     try {
-      final token = getToken(context);
-      final weight = await WeightApi.saveWeight(payload, token);
+      final weight = await api.saveWeight(payload);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Added weight'),
       ));

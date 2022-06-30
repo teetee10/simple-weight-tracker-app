@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     final payload = jsonEncode({'email': email, 'password': password});
-    await auth.signIn(context, payload);
+    await auth.userSignIn(context, payload);
   }
 
   @override
