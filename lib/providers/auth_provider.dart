@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tracker/constants.dart';
 
 import '../models/user_model.dart';
 
@@ -14,10 +15,10 @@ class AuthProvider extends ChangeNotifier {
   bool get getIsAuthenticated => isAuthenticated;
 
   AuthProvider({this.storage, this.api}) {
-    _loadFromPrefs();
+    _loadFromStore();
   }
 
-  void _loadFromPrefs() {
+  void _loadFromStore() {
     var check = storage?.containsKey('user') ?? false;
     if (check) {
       Map<String, dynamic> userJson = jsonDecode(storage?.getString('user'));
@@ -27,7 +28,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _saveToPrefs() {
+  void _saveToStore() {
     final String? userString = jsonEncode(user);
     if (userString != null) storage?.setString('user', userString);
     storage?.setBool('isAuthenticated', isAuthenticated);
@@ -38,7 +39,7 @@ class AuthProvider extends ChangeNotifier {
       final response = await api.login(payload);
       user = response;
       isAuthenticated = true;
-      _saveToPrefs();
+      _saveToStore();
       notifyListeners();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -51,8 +52,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       final response = await api.signup(payload);
       user = response;
-      isAuthenticated = true;
-      notifyListeners();
+      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/screens/add_weight_screen.dart';
-import 'package:tracker/screens/login_screen.dart';
-import 'package:tracker/screens/signup_screen.dart';
-import 'package:tracker/screens/weight_history_screen.dart.dart'; 
+import 'package:tracker/screens/weight/add_weight_screen.dart';
+import 'package:tracker/screens/auth/login_screen.dart';
+import 'package:tracker/screens/auth/signup_screen.dart';
+import 'package:tracker/screens/weight/weight_history_screen.dart.dart'; 
 
 import 'constants.dart'; 
 

@@ -7,7 +7,7 @@ import '../transforms/init_store.dart';
 
 class HttpMiddleware {
   HttpMiddleware() {
-    refreshHeader();
+    headerWithToken();
   }
 
   final String _baseUrl = EnvConfig.API_BASE_URL;
@@ -16,7 +16,7 @@ class HttpMiddleware {
     'Accept': 'application/json',
   };
 
-  Future<dynamic> refreshHeader() async {
+  Future<dynamic> headerWithToken() async {
     final check = StoreInit.instance.containsKey('user');
     if (check) {
       final user = jsonDecode(StoreInit.instance.getString('user')!);
@@ -24,14 +24,19 @@ class HttpMiddleware {
     }
   }
 
-  Future<Response> asPost(url, encodedParams) async {
-    return await post(Uri.parse(_baseUrl + url), headers: header, body: encodedParams);
+  Future<dynamic> asPost(url, encodedParams) async {
+    final response =
+        await post(Uri.parse(_baseUrl + url), headers: header, body: encodedParams);
+    final responseBody = jsonDecode(response.body); 
+    return responseBody;
   }
 
-  Future<Response> asGet(url, [encodedParams]) async {
-    return await get(
+  Future<dynamic> asGet(url, [encodedParams]) async {
+    final response = await get(
       Uri.parse(_baseUrl + url),
       headers: header,
     );
+    final responseBody = jsonDecode(response.body); 
+    return responseBody;
   }
 }

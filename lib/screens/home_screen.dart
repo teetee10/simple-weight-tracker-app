@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tracker/constants.dart';
 
 import '../providers/auth_provider.dart';
-import 'add_weight_screen.dart';
+import 'weight/add_weight_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute<void>(
-                  builder: (BuildContext context) => AddWeightScreen()),
+                  builder: (BuildContext context) => const AddWeightScreen()),
               ModalRoute.withName(addWeightRoute),
             );
           });
