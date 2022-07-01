@@ -4,8 +4,9 @@ import 'package:tracker/api/user_api.dart';
 
 import '../models/user_model.dart';
 import '../transforms/store_utils.dart';
+import 'provider.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthProvider extends ChangeNotifier implements AppProvider {
   final SharedPreferences? storage;
   final AuthApi? api;
 

@@ -41,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     try {
       await auth.userSignup(payload);
-      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.toString()),

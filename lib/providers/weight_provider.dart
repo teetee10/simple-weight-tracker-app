@@ -3,8 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/weight_api.dart';
 import '../models/weight_model.dart';
+import 'provider.dart';
 
-class WeightProvider extends ChangeNotifier {
+class WeightProvider extends ChangeNotifier implements AppProvider {
   final SharedPreferences? storage;
   final WeightApi? api;
 

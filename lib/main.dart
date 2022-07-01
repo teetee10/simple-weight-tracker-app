@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tracker/api/user_api.dart';
 import 'package:tracker/providers/auth_provider.dart';
 import 'package:tracker/providers/weight_provider.dart';
 import 'package:tracker/router.dart';
 import 'package:tracker/screens/home_screen.dart';
 
-import 'api/weight_api.dart';
+import 'api/api.dart';
 import 'transforms/init_store.dart';
 
 void main() async {
@@ -15,9 +14,8 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         lazy: true,
-        create: (_) => AuthProvider(storage: AppStore.instance, api: UseAuthApi())),
-    ChangeNotifierProvider(
-        create: (_) => WeightProvider(storage: AppStore.instance, api: UseWeightApi())),
+        create: (_) => AuthProvider(storage: AppStore.instance, api: Api.authApi)),
+    ChangeNotifierProvider(create: (_) => WeightProvider(api: Api.weightApi)),
   ], child: const MyApp()));
 }
 

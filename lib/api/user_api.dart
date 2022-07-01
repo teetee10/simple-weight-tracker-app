@@ -22,6 +22,19 @@ class UseAuthApi extends HttpMiddleware implements AuthApi {
     if (response['success']) {
       return User.fromJson(response['data']);
     }
-     throw response['message'];
+    throw response['message'];
+  }
+}
+
+class UseAuthData extends AuthApi {
+  @override
+  Future<User> login(encodedParams) async {
+    return await User(token: '1111', name: 'John Doe', email: 'test@email.com');
+  }
+
+  // signup
+  @override
+  Future<User> signup(encodedParams) async {
+    return await User(name: 'John Doe', email: '', password: '1111');
   }
 }

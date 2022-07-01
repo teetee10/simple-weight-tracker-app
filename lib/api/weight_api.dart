@@ -34,3 +34,24 @@ class UseWeightApi extends HttpMiddleware implements WeightApi {
     return weightHistory;
   }
 }
+
+class UseWeightData extends WeightApi {
+  @override
+  Future<Weight> saveWeight(encodedParams) async {
+    return Weight( weight: '80', time: DateTime.now().toString());
+  }
+
+  @override
+  Future<Weight> updateWeight(encodedParams) async {
+    return Weight( weight: '80', time: DateTime.now().toString());
+  }
+
+  @override
+  Future<List<Weight>> getWeightHistory() async {
+    List<Weight> weightHistory = [];
+    weightHistory.add(Weight(  weight: '80', time: DateTime.now().toString()));
+    weightHistory.add(Weight(  weight: '85', time: DateTime.now().toString()));
+    weightHistory.add(Weight(  weight: '90', time: DateTime.now().toString()));
+    return weightHistory;
+  }
+}
