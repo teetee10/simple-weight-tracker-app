@@ -46,7 +46,7 @@ class WeightProvider extends ChangeNotifier {
       final weight = await api?.saveWeight(payload);
       addToWeightHistory(weight!);
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 }
