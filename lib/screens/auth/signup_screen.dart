@@ -32,13 +32,21 @@ class _SignupScreenState extends State<SignupScreen> {
   void handleSubmit() async {
     if (email == '' || password == '' || name == '') {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please enter an email and password'),
+        content: const Text('Please enter an email and password'),
       ));
       return;
     }
 
     final payload = jsonEncode({'email': email, 'password': password, 'name': name});
-    await auth.userSignup(context, payload);
+
+    try {
+      await auth.userSignup(payload);
+      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
   }
 
   @override

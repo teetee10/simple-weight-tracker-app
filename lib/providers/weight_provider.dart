@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/weight_api.dart';
 import '../models/weight_model.dart';
+import '../transforms/init_store.dart';
 
 class WeightProvider extends ChangeNotifier {
   final SharedPreferences? storage;
@@ -23,42 +24,30 @@ class WeightProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchWeightHistory(context) async {
+  void fetchWeightHistory() async {
     try {
       final response = await api?.getWeightHistory();
       setWeightHistory(response!);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      throw Exception(e);
     }
   }
 
-  void updateWeightHistory(context, payload) async {
+  void updateWeightHistory(payload) async {
     try {
       final weight = await api?.updateWeight(payload);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('updated weight'),
-      ));
       addToWeightHistory(weight!);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      throw Exception(e);
     }
   }
 
-  void addWeight(context, payload) async {
+  void addWeight(payload) async {
     try {
       final weight = await api?.saveWeight(payload);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Added weight'),
-      ));
       addToWeightHistory(weight!);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      throw Exception(e);
     }
   }
 }

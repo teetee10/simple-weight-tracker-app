@@ -33,9 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
       ));
       return;
     }
-
     final payload = jsonEncode({'email': email, 'password': password});
-    await auth.userSignIn(context, payload);
+    try {
+      await auth.userSignIn(payload);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
   }
 
   @override

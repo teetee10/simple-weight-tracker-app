@@ -13,14 +13,23 @@ class WeightHistoryScreen extends StatefulWidget {
 }
 
 class _WeightHistoryScreenState extends State<WeightHistoryScreen> {
-  dynamic userWeight;
+  WeightProvider? userWeight;
+
+  void _fetchWeightHistory() {
+    try {
+      userWeight?.fetchWeightHistory();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
+  }
 
   @override
   void initState() {
     userWeight = Provider.of<WeightProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      userWeight.fetchWeightHistory(context);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchWeightHistory());
+
     super.initState();
   }
 

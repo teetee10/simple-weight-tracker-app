@@ -33,8 +33,17 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
     }
     final time = DateTime.now().toString();
     final payload = jsonEncode({'weight': weight, 'time': time});
-    await userWeight.addWeight(context, payload);
-    textarea.clear();
+    try {
+      textarea.clear();
+      await userWeight.addWeight(payload);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Added weight'),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
   }
 
   @override

@@ -2,21 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tracker/constants.dart';
+import 'package:tracker/api/user_api.dart';
 
-import '../api/user_api.dart';
 import '../models/user_model.dart';
+import '../transforms/init_store.dart';
 
 class AuthProvider extends ChangeNotifier {
   final SharedPreferences? storage;
-  final UserApi?  api;
+  final AuthApi? api;
 
   User? user;
   bool isAuthenticated = false;
   User? get getUser => user;
   bool get getIsAuthenticated => isAuthenticated;
 
-  AuthProvider({this.storage, this.api}) {
+  AuthProvider({this.api, this.storage}) {
     _loadFromStore();
   }
 
@@ -37,29 +37,23 @@ class AuthProvider extends ChangeNotifier {
     storage?.setBool('isAuthenticated', isAuthenticated);
   }
 
-  void userSignIn(context, payload) async {
+  void userSignIn(payload) async {
     try {
-      final response = await api?.login(payload);
-      user = response;
+      user = await api?.login(payload);
       isAuthenticated = true;
       _saveToStore();
       notifyListeners();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      throw Exception(e);
     }
   }
 
-  void userSignup(context, payload) async {
+  void userSignup(payload) async {
     try {
-      final response = await api?.signup(payload);
-      user = response;
-      Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
+      user = await api?.signup(payload);
+      notifyListeners();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      throw Exception(e);
     }
   }
 }
