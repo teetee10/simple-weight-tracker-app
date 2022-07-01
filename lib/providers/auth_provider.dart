@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker/api/user_api.dart';
 
 import '../models/user_model.dart';
+import '../transforms/store_utils.dart';
 
 class AuthProvider extends ChangeNotifier {
   final SharedPreferences? storage;
@@ -16,31 +15,26 @@ class AuthProvider extends ChangeNotifier {
   bool get getIsAuthenticated => isAuthenticated;
 
   AuthProvider({this.api, this.storage}) {
-    _loadFromStore();
+     loadFromStore();
   }
 
-  void _loadFromStore() {
-    var check = storage?.containsKey('user') ?? false;
-    if (check) {
-      final String? userString = storage?.getString('user');
-      Map<String, dynamic> userJson = jsonDecode(userString!);
-      user = User.fromJson(userJson);
+  void loadFromStore() async {
+    try {
+      isAuthenticated = await storage?.getBool('isAuthenticated')! ?? false;
+      user = User.fromJson(await getClassFromStore(storage, 'user'));
+      notifyListeners();
+    } catch (e) {
+      print('store is empty');
     }
-    isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
-    notifyListeners();
-  }
-
-  void _saveToStore() {
-    final String? userString = jsonEncode(user);
-    if (userString != null) storage?.setString('user', userString);
-    storage?.setBool('isAuthenticated', isAuthenticated);
   }
 
   void userSignIn(payload) async {
     try {
-      user = await api?.login(payload);
+      final response = await api?.login(payload);
+      user = response;
       isAuthenticated = true;
-      _saveToStore();
+      storage?.setBool('isAuthenticated', isAuthenticated);
+      saveStringToStore(storage, 'user', response);
       notifyListeners();
     } catch (e) {
       throw e.toString();

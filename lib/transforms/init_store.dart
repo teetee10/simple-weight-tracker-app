@@ -27,4 +27,6 @@ class AppStore {
   static Future init() async {
       instance = await SharedPreferences.getInstance();
   }
+
+  
 }
