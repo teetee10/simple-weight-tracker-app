@@ -13,7 +13,7 @@ class UseAuthApi extends HttpMiddleware implements AuthApi {
     if (response['success']) {
       return User.fromJson(response['data']);
     }
-    throw Exception(response['message']);
+    throw response['message'];
   }
 
   @override
@@ -22,6 +22,6 @@ class UseAuthApi extends HttpMiddleware implements AuthApi {
     if (response['success']) {
       return User.fromJson(response['data']);
     }
-    throw UnimplementedError();
+     throw response['message'];
   }
 }

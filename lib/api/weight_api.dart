@@ -14,7 +14,7 @@ class UseWeightApi extends HttpMiddleware implements WeightApi {
     if (response['success']) {
       return Weight.fromJson(response['data']);
     }
-    throw Exception(response['message']);
+     throw response['message'];
   }
 
   Future<Weight> updateWeight(encodedParams) async {
@@ -22,7 +22,7 @@ class UseWeightApi extends HttpMiddleware implements WeightApi {
     if (response['success']) {
       return Weight.fromJson(response['data']);
     }
-    throw Exception(response['message']);
+     throw response['message'];
   }
 
   Future<List<Weight>> getWeightHistory() async {

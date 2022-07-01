@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/weight_api.dart';
 import '../models/weight_model.dart';
-import '../transforms/init_store.dart';
 
 class WeightProvider extends ChangeNotifier {
   final SharedPreferences? storage;
@@ -29,7 +28,7 @@ class WeightProvider extends ChangeNotifier {
       final response = await api?.getWeightHistory();
       setWeightHistory(response!);
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 
@@ -38,7 +37,7 @@ class WeightProvider extends ChangeNotifier {
       final weight = await api?.updateWeight(payload);
       addToWeightHistory(weight!);
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 

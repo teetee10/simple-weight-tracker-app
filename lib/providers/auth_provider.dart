@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker/api/user_api.dart';
 
 import '../models/user_model.dart';
-import '../transforms/init_store.dart';
 
 class AuthProvider extends ChangeNotifier {
   final SharedPreferences? storage;
@@ -44,7 +43,7 @@ class AuthProvider extends ChangeNotifier {
       _saveToStore();
       notifyListeners();
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 
@@ -53,7 +52,7 @@ class AuthProvider extends ChangeNotifier {
       user = await api?.signup(payload);
       notifyListeners();
     } catch (e) {
-      throw Exception(e);
+      throw e.toString();
     }
   }
 }
