@@ -17,9 +17,9 @@ class HttpMiddleware {
   };
 
   Future<dynamic> headerWithToken() async {
-    final check = StoreInit.instance.containsKey('user');
+    final check = Store.instance.containsKey('user');
     if (check) {
-      final user = jsonDecode(StoreInit.instance.getString('user')!);
+      final user = jsonDecode(Store.instance.getString('user')!);
       header['Authorization'] = 'Bearer ${user['token']}';
     }
   }

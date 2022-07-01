@@ -11,13 +11,13 @@ import 'transforms/init_store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await StoreInit.init();
+  await Store.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
         lazy: true,
-        create: (_) => AuthProvider(storage: StoreInit.instance, api: UserApi())),
+        create: (_) => AuthProvider(storage: Store.instance, api: UserApi())),
     ChangeNotifierProvider(
-        create: (_) => WeightProvider(storage: StoreInit.instance, api: WeightApi())),
+        create: (_) => WeightProvider(storage: Store.instance, api: WeightApi())),
   ], child: const MyApp()));
 }
 
