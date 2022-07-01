@@ -24,14 +24,14 @@ class HttpMiddleware {
     }
   }
 
-  Future<dynamic> asPost(url, encodedParams) async {
+  Future<dynamic> withPost(url, encodedParams) async {
     final response =
         await post(Uri.parse(_baseUrl + url), headers: header, body: encodedParams);
     final responseBody = jsonDecode(response.body); 
     return responseBody;
   }
 
-  Future<dynamic> asGet(url, [encodedParams]) async {
+  Future<dynamic> withGet(url, [encodedParams]) async {
     final response = await get(
       Uri.parse(_baseUrl + url),
       headers: header,

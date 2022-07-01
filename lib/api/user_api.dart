@@ -3,7 +3,7 @@ import '../models/user_model.dart';
 
 class UserApi extends HttpMiddleware {
   Future<User> login(encodedParams) async {
-    final response = await asPost('auth/login', encodedParams);
+    final response = await withPost('auth/login', encodedParams);
     if (response['success']) {
       return User.fromJson(response['data']);
     }
@@ -11,7 +11,7 @@ class UserApi extends HttpMiddleware {
   }
 
   Future<User> signup(encodedParams) async {
-    final response = await asPost('auth/signup', encodedParams);
+    final response = await withPost('auth/signup', encodedParams);
     if (response['success']) {
       return User.fromJson(response['data']);
     }
