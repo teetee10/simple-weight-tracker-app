@@ -58,7 +58,7 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
               TextField(
                 controller: textarea,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Weight in (cm)'),
+                decoration: const InputDecoration(labelText: 'Weight in (kg)'),
                 onChanged: (value) {
                   setState(() {
                     weight = value;

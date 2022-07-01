@@ -14,8 +14,7 @@ void main() async {
   await Store.init();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-        lazy: true,
-        create: (_) => AuthProvider(storage: Store.instance, api: UserApi())),
+        lazy: true, create: (_) => AuthProvider(storage: Store.instance, api: UserApi())),
     ChangeNotifierProvider(
         create: (_) => WeightProvider(storage: Store.instance, api: WeightApi())),
   ], child: const MyApp()));

@@ -51,7 +51,7 @@ class _WeightHistoryScreenState extends State<WeightHistoryScreen> {
           itemCount: weightHistory.length,
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (_, index) => ListTile(
-            title: Text('Record - ${weightHistory[index].weight}cm'),
+            title: Text('Record - ${weightHistory[index].weight}kg'),
             trailing: Text(formatDateFromString(weightHistory[index].time)),
           ),
         ));
