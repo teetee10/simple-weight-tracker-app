@@ -33,7 +33,7 @@ class _WeightHistoryScreenState extends State<WeightHistoryScreen> {
 
   List<Weight> sortWeightHistoryByTime() {
     final userWeightHistory = Provider.of<WeightProvider>(context);
-    List<Weight> sortedWeightHistory = userWeightHistory.weightHistory;
+    List<Weight> sortedWeightHistory = userWeightHistory.weightHistory!;
     sortedWeightHistory.sort(
         (a, b) => formatDateFromString(b.time).compareTo(formatDateFromString(a.time)));
     return sortedWeightHistory;

@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tracker/constants.dart';
 
+import '../api/user_api.dart';
 import '../models/user_model.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final storage;
-  final api;
+  final SharedPreferences? storage;
+  final UserApi?  api;
 
   User? user;
   bool isAuthenticated = false;
@@ -21,7 +23,8 @@ class AuthProvider extends ChangeNotifier {
   void _loadFromStore() {
     var check = storage?.containsKey('user') ?? false;
     if (check) {
-      Map<String, dynamic> userJson = jsonDecode(storage?.getString('user'));
+      final String? userString = storage?.getString('user');
+      Map<String, dynamic> userJson = jsonDecode(userString!);
       user = User.fromJson(userJson);
     }
     isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
@@ -36,7 +39,7 @@ class AuthProvider extends ChangeNotifier {
 
   void userSignIn(context, payload) async {
     try {
-      final response = await api.login(payload);
+      final response = await api?.login(payload);
       user = response;
       isAuthenticated = true;
       _saveToStore();
@@ -50,7 +53,7 @@ class AuthProvider extends ChangeNotifier {
 
   void userSignup(context, payload) async {
     try {
-      final response = await api.signup(payload);
+      final response = await api?.signup(payload);
       user = response;
       Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => false);
     } catch (e) {
