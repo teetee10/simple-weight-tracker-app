@@ -17,18 +17,26 @@ class HttpMiddleware {
   };
 
   Future<dynamic> headerWithToken() async {
-    final check = AppStore.instance.containsKey('user');
+    final check = AppStore.storage.containsKey('user');
     if (check) {
-      final user = jsonDecode(AppStore.instance.getString('user')!);
+      final user = jsonDecode(AppStore.storage.getString('user')!);
       header['Authorization'] = 'Bearer ${user['token']}';
     }
   }
 
-  Future<dynamic> withPost(url, encodedParams) async {
+  getResponseData(response) {
+    final responseBody = jsonDecode(response.body);
+    if (responseBody['success']) {
+      return responseBody['data'];
+    }
+    throw responseBody['message'];
+  }
+
+  Future<dynamic> withPost(url, encodedParams) async { 
     final response =
-        await post(Uri.parse(_baseUrl + url), headers: header, body: encodedParams);
-    final responseBody = jsonDecode(response.body); 
-    return responseBody;
+        await post(Uri.parse(_baseUrl + url), headers: header, body: jsonEncode(encodedParams));
+    return getResponseData(response);
+   
   }
 
   Future<dynamic> withGet(url, [encodedParams]) async {
@@ -36,7 +44,6 @@ class HttpMiddleware {
       Uri.parse(_baseUrl + url),
       headers: header,
     );
-    final responseBody = jsonDecode(response.body); 
-    return responseBody;
+    return getResponseData(response);
   }
 }

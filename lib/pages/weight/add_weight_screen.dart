@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/weight_provider.dart';
 
 class AddWeightScreen extends StatefulWidget {
@@ -16,28 +15,39 @@ class AddWeightScreen extends StatefulWidget {
 class _AddWeightScreenState extends State<AddWeightScreen> {
   String weight = '';
   TextEditingController textarea = TextEditingController();
-  dynamic userWeight;
+  WeightProvider? userWeight;
+  AuthProvider? userAuth;
 
   @override
   void initState() {
     userWeight = Provider.of<WeightProvider>(context, listen: false);
+    userAuth = Provider.of<AuthProvider>(context, listen: false);
     super.initState();
   }
 
-  void handleSubmit() async {
+  void logout() async {
+    await userAuth?.clear();
+    Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+  }
+
+  Map<String, dynamic>? getValidated() {
     if (weight == '') {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Please enter a weight'),
       ));
-      return;
     }
+
     final time = DateTime.now().toString();
-    final payload = jsonEncode({'weight': weight, 'time': time});
+    return {"weight": weight, "time": time};
+  }
+
+  void handleSubmit() async {
     try {
       textarea.clear();
-      await userWeight.addWeight(payload);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Added weight'),
+      final payload = getValidated();
+      await userWeight?.addToWeightHistory(payload);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Added weight'),
       ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -53,12 +63,19 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
           title: const Text('Add Weight'),
           actions: <Widget>[
             IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.list,
                   semanticLabel: 'View History',
                   color: Colors.white,
                 ),
-                onPressed: () => Navigator.pushNamed(context, weightHistoryRoute))
+                onPressed: () => Navigator.pushNamed(context, weightHistoryRoute)),
+            IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                  semanticLabel: 'View History',
+                  color: Colors.white,
+                ),
+                onPressed: () => logout())
           ],
         ),
         body: Center(

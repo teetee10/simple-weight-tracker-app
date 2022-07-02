@@ -8,7 +8,7 @@ import 'package:tracker/constants.dart';
 import '../../providers/auth_provider.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -19,27 +19,32 @@ class _SignupScreenState extends State<SignupScreen> {
   String password = 'test';
   String name = 'test';
   dynamic auth;
-
   TextEditingController textarea = TextEditingController();
 
   @override
   void initState() {
-    auth = Provider.of<AuthProvider>(context, listen: false);
     textarea.text = email;
+    auth = Provider.of<AuthProvider>(context, listen: false);
     super.initState();
   }
 
-  void handleSubmit() async {
+  void logout() async {
+    await auth.clear();
+    Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
+  }
+
+   Map<String, dynamic>? getValidated() {
     if (email == '' || password == '' || name == '') {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Please enter an email and password'),
-      ));
-      return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please enter an email and password'),
+      )); 
     }
+    return  {'email': email, 'password': password, 'name': name};
+  }
 
-    final payload = jsonEncode({'email': email, 'password': password, 'name': name});
-
+  void handleSubmit() async {
     try {
+      final payload = getValidated();
       await auth.userSignup(payload);
       Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => true);
     } catch (e) {

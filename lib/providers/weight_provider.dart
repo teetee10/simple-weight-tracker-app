@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tracker/providers/provider.dart';
+import 'package:tracker/transforms/init_store.dart';
 
 import '../api/weight_api.dart';
-import '../models/weight_model.dart';
-import 'provider.dart';
+import '../models/weight_model.dart'; 
 
 class WeightProvider extends ChangeNotifier implements AppProvider {
-  final SharedPreferences? storage;
+  @override
+  final AppStore? storage;
+  @override
   final WeightApi? api;
+  @override
+  AppState? appState;
 
   List<Weight>? weightHistory = [];
-  List<Weight>? get getWeightHistory => weightHistory;
-
   WeightProvider({this.storage, this.api});
 
   void setWeightHistory(List<Weight> weight) {
@@ -19,9 +21,10 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
     notifyListeners();
   }
 
-  void addToWeightHistory(Weight weight) {
-    weightHistory?.add(weight);
+  Future<void> addToWeightHistory(weight) async { 
+    weightHistory?.add(Weight.fromJson(weight));
     notifyListeners();
+    _addWeight(weight);
   }
 
   void fetchWeightHistory() async {
@@ -35,19 +38,25 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
 
   void updateWeightHistory(payload) async {
     try {
-      final weight = await api?.updateWeight(payload);
-      addToWeightHistory(weight!);
+      await api?.updateWeight(payload);
     } catch (e) {
+      throw e.toString();
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void _addWeight(payload) async {
+    try {
+      await api?.saveWeight(payload);
+    } catch (e) {
+      weightHistory?.removeLast();
       throw e.toString();
     }
   }
 
-  void addWeight(payload) async {
-    try {
-      final weight = await api?.saveWeight(payload);
-      addToWeightHistory(weight!);
-    } catch (e) {
-      throw e.toString();
-    }
+  @override
+  void loadFromStore() {
+    // TODO: implement loadFromStore
   }
 }

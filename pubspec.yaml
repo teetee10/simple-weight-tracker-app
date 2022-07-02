@@ -36,6 +36,7 @@ dependencies:
   environment_config: ^3.1.0
   shared_preferences: ^2.0.15 
   panara_dialogs: ^0.0.9
+  flutter_spinkit: ^5.1.0
   intl: ^0.17.0
 
 dev_dependencies:

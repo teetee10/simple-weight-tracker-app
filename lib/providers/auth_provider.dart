@@ -1,53 +1,75 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tracker/api/user_api.dart';
+import 'package:tracker/providers/provider.dart';
+import 'package:tracker/transforms/init_store.dart';
 
 import '../models/user_model.dart';
-import '../transforms/store_utils.dart';
-import 'provider.dart';
+import 'preference_provider.dart';
 
 class AuthProvider extends ChangeNotifier implements AppProvider {
-  final SharedPreferences? storage;
+  @override
+  final AppStore? storage;
+  @override
   final AuthApi? api;
+  @override
+  AppState? appState = AppState.idle;
 
   User? user;
   bool isAuthenticated = false;
-  User? get getUser => user;
-  bool get getIsAuthenticated => isAuthenticated;
 
   AuthProvider({this.api, this.storage}) {
-     loadFromStore();
+    loadFromStore();
   }
 
+  @override
   void loadFromStore() async {
     try {
-      isAuthenticated = await storage?.getBool('isAuthenticated')! ?? false;
-      user = User.fromJson(await getClassFromStore(storage, 'user'));
-      notifyListeners();
+      final _user = await storage?.getDecodedString('user');
+      isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
+      user = User.fromJson(_user);
     } catch (e) {
-      print('store is empty');
+      if (kDebugMode) {
+        print('store is empty');
+      }
+    } finally {
+      notifyListeners();
     }
   }
 
+  _updateAppState(AppState _appState) {
+    appState = _appState;
+    notifyListeners();
+  }
+
+  clear() async {
+    isAuthenticated = false;
+    await storage?.clear();
+    notifyListeners();
+  }
+
   void userSignIn(payload) async {
+    _updateAppState(AppState.loading);
     try {
       final response = await api?.login(payload);
-      user = response;
       isAuthenticated = true;
+      user = User.fromJson(response);
       storage?.setBool('isAuthenticated', isAuthenticated);
-      saveStringToStore(storage, 'user', response);
-      notifyListeners();
+      storage?.setEncodedString('user', response);
     } catch (e) {
       throw e.toString();
+    } finally {
+      _updateAppState(AppState.idle);
     }
   }
 
   void userSignup(payload) async {
+    _updateAppState(AppState.loading);
     try {
-      user = await api?.signup(payload);
-      notifyListeners();
+      await api?.signup(payload);
     } catch (e) {
       throw e.toString();
+    } finally {
+      _updateAppState(AppState.idle);
     }
   }
 }

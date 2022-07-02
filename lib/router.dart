@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/screens/weight/add_weight_screen.dart';
-import 'package:tracker/screens/auth/login_screen.dart';
-import 'package:tracker/screens/auth/signup_screen.dart';
-import 'package:tracker/screens/weight/weight_history_screen.dart.dart'; 
+import 'package:tracker/pages/auth/login_screen.dart';
+import 'package:tracker/pages/auth/signup_screen.dart';
+import 'package:tracker/pages/weight/add_weight_screen.dart'; 
 
-import 'constants.dart'; 
+import 'constants.dart';
+import 'pages/weight/weight_history_screen.dart.dart';
 
 class AppRouter {
-  static Route<dynamic> generateRoute(RouteSettings settings) { 
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case loginRoute:
         return MaterialPageRoute(builder: (_) => LoginScreen());

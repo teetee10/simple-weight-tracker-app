@@ -6,5 +6,10 @@ environment_config:
       default: "http://localhost:3000/api/"
       dotenv: true
   
+   DEVELOPMENT:
+      env_var: DEVELOPMENT
+      default: true
+      dotenv: true
+  
   imports:
     - dart:io
