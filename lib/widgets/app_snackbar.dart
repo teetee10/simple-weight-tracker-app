@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
+import '../constants/colors.dart';
 
 class AppSnackBar {
   BuildContext? context;
@@ -18,7 +18,7 @@ class AppSnackBar {
   void show() => Flushbar(
         margin: const EdgeInsets.all(10),
         borderRadius: BorderRadius.circular(12),
-        title: title,
+        title: title?.toUpperCase(),
         backgroundColor: color!,
         showProgressIndicator: false,
         progressIndicatorValueColor: const AlwaysStoppedAnimation<Color>(primary),

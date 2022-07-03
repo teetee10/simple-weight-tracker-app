@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/constants/colors.dart';
 
 // For all Flutter buttons, go here --> https://flutter.dev/docs/development/ui/widgets/material#Buttons
 
@@ -183,12 +184,11 @@ class SimpleElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData currentTheme = Theme.of(context);
     return ElevatedButton(
       child: child,
       style: ElevatedButton.styleFrom(
         padding: padding,
-        primary: color ?? currentTheme.primaryColor,
+        primary: color ?? primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),

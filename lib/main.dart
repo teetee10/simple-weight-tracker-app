@@ -12,8 +12,9 @@ import 'transforms/init_store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Api.init();
   await AppStore.init();
-  Api();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => PreferenceProvider()),
     ChangeNotifierProvider(

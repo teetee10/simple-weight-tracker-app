@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/constants/colors.dart';
+
+import '../constants/sizes.dart';
 
 Widget Spinkit([color = Colors.transparent]) => Center(
       child: Container(
@@ -7,7 +10,7 @@ Widget Spinkit([color = Colors.transparent]) => Center(
           alignment: Alignment.topCenter,
           child: const DecoratedBox(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                  borderRadius: BorderRadius.all(Radius.circular(kAppMargin)),
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(offset: Offset(0, 2), blurRadius: 20, color: Colors.black26)
@@ -15,5 +18,9 @@ Widget Spinkit([color = Colors.transparent]) => Center(
               child: Padding(
                   padding: EdgeInsets.all(10),
                   child: SizedBox(
-                      width: 25, height: 25, child: CircularProgressIndicator())))),
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: primary,
+                      ))))),
     );

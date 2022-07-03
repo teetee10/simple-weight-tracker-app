@@ -4,7 +4,7 @@ import 'package:tracker/pages/auth/signup_screen.dart';
 import 'package:tracker/pages/ui-screen.dart';
 import 'package:tracker/pages/weight/add_weight_screen.dart'; 
 
-import 'constants.dart';
+import 'constants/routes.dart';
 import 'pages/weight/weight_history_screen.dart.dart';
 
 class AppRouter {

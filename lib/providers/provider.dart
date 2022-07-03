@@ -6,5 +6,4 @@ abstract class AppProvider {
   AppState? appState = AppState.idle;
   AppProvider({this.storage, this.api});
 
-  void loadFromStore();
 }

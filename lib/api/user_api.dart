@@ -20,7 +20,7 @@ class UseAuthApi extends HttpMiddleware implements AuthApi {
 class UseAuthData extends AuthApi {
   @override
   Future<Map<String, dynamic>> login(encodedParams) async {
-    return Future.delayed(const Duration(seconds: 5),
+    return Future.delayed(const Duration(seconds: 2),
         () => {'token': '1111', 'name': 'John Doe', 'email': 'test@email.com'});
   }
 

@@ -16,7 +16,6 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
   List<Weight>? weightHistory = [];
   WeightProvider({this.storage, this.api});
 
-
   _updateAppState(AppState _appState) {
     appState = _appState;
     notifyListeners();
@@ -57,10 +56,5 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
       weightHistory?.removeLast();
       throw e.toString();
     }
-  }
-
-  @override
-  void loadFromStore() {
-    // TODO: implement loadFromStore
   }
 }

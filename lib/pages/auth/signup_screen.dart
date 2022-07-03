@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tracker/constants.dart';
+import 'package:tracker/constants/routes.dart';
 
+import '../../constants/sizes.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/app_snackbar.dart';
+import '../../widgets/buttons.dart';
+import '../../widgets/inputs.dart';
+import '../../widgets/pages_app_bar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -32,18 +36,16 @@ class _SignupScreenState extends State<SignupScreen> {
     Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
   }
 
-  Map<String, dynamic>? getValidated() {
+  void validate() {
     if (email == '' || password == '' || name == '') {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please enter an email and password'),
-      ));
+      AppSnackBar('error', 'Please enter an email and password', context);
+      return;
     }
-    return {'email': email, 'password': password, 'name': name};
+    handleSubmit({'email': email, 'password': password, 'name': name});
   }
 
-  void handleSubmit() async {
+  void handleSubmit(payload) async {
     try {
-      final payload = getValidated();
       await auth.userSignup(payload);
       Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => true);
     } catch (e) {
@@ -54,47 +56,47 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign up'),
-      ),
+      appBar: PagesAppBar(title: 'Sign up'),
       body: Center(
         child: Form(
-            child: ListView(padding: const EdgeInsets.all(20.0), children: <Widget>[
-          TextField(
-            keyboardType: TextInputType.name,
-            decoration: const InputDecoration(labelText: 'Name'),
+            child: ListView(padding: const EdgeInsets.all(kAppMargin), children: <Widget>[
+          SimpleTextField(
+            textInputType: TextInputType.name,
+            labelText: 'Name',
             onChanged: (value) {
               setState(() {
                 name = value;
               });
             },
           ),
-          TextField(
-            controller: textarea,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'Email'),
+          const SizedBox(height: kAppMargin),
+          SimpleTextField(
+            textEditingController: textarea,
+            textInputType: TextInputType.emailAddress,
+            labelText: 'Email',
             onChanged: (value) {
               setState(() {
                 email = value;
               });
             },
           ),
-          TextFormField(
+          const SizedBox(height: kAppMargin),
+          SimpleTextField(
             obscureText: true,
-            decoration: const InputDecoration(labelText: 'Password'),
+            labelText: 'Password',
             onChanged: (value) {
               setState(() {
                 password = value;
               });
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: kAppMargin),
           InkWell(
               child: const Text('Already signed up?', textAlign: TextAlign.right),
               onTap: () => Navigator.pushNamed(context, loginRoute)),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => handleSubmit(),
+          const SizedBox(height: kAppMargin),
+          SimpleElevatedButton(
+            onPressed: () => validate(),
             child: const Text('Continue'),
           ),
         ])),

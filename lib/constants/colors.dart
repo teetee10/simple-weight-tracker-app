@@ -1,6 +1,6 @@
 import 'package:flutter/painting.dart';
 
-const Color primary = Color(0xFF1389FD);
+const Color primary = Color(0xFF58C47C);
 const Color primaryDark = Color(0xFF0276e8);
 const Color primaryLight = Color(0xFFE7F8FF);
 

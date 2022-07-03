@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
+import '../../constants/routes.dart';
+import '../../constants/sizes.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/weight_provider.dart';
 import '../../widgets/app_snackbar.dart';
+import '../../widgets/buttons.dart';
 import '../../widgets/control_wrapper.dart';
+import '../../widgets/inputs.dart';
+import '../../widgets/pages_app_bar.dart';
 
 class AddWeightScreen extends StatefulWidget {
   const AddWeightScreen({Key? key}) : super(key: key);
@@ -28,26 +32,30 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
   }
 
   void logout() async {
-    await userAuth?.clear();
+    await userAuth?.logout();
     Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
   }
 
-  Map<String, dynamic>? getValidated() {
+  void validate() {
     if (weight == '') {
       AppSnackBar('Error', 'Please enter a weight', context);
-      return null;
+      return;
     }
-
-    final time = DateTime.now().toString();
-    return {"weight": weight, "time": time};
+    handleSubmit({"weight": weight, "time": DateTime.now().toString()});
   }
 
-  void handleSubmit() async {
+  void clearInput() {
+    setState(() {
+      weight = '';
+    });
+    textarea.clear();
+  }
+
+  void handleSubmit(payload) async {
     try {
-      final payload = getValidated();
       await userWeight?.addToWeightHistory(payload);
-      textarea.clear();
-      AppSnackBar('success', 'added weight', context);
+      AppSnackBar('success', 'Added weight', context);
+      clearInput();
     } catch (e) {
       AppSnackBar('Error', e.toString(), context, Colors.red);
     }
@@ -57,41 +65,39 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
   Widget build(BuildContext context) {
     return ControlWrapper<WeightProvider>(
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Add Weight'),
-            actions: <Widget>[
-              IconButton(
-                  icon: const Icon(
-                    Icons.list,
-                    semanticLabel: 'View History',
-                    color: Colors.white,
-                  ),
-                  onPressed: () => Navigator.pushNamed(context, weightHistoryRoute)),
-              IconButton(
-                  icon: const Icon(
-                    Icons.logout,
-                    semanticLabel: 'View History',
-                    color: Colors.white,
-                  ),
-                  onPressed: () => logout())
-            ],
-          ),
+          appBar: PagesAppBar(title: 'Add Weight', actions: [
+            IconButton(
+                icon: const Icon(
+                  Icons.list,
+                  semanticLabel: 'View History',
+                  color: Colors.white,
+                ),
+                onPressed: () => Navigator.pushNamed(context, weightHistoryRoute)),
+            IconButton(
+                icon: const Icon(
+                  Icons.logout,
+                  semanticLabel: 'View History',
+                  color: Colors.white,
+                ),
+                onPressed: () => logout())
+          ]),
           body: Center(
             child: Form(
-              child: ListView(padding: const EdgeInsets.all(20.0), children: <Widget>[
-                TextField(
-                  controller: textarea,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Weight in (kg)'),
+              child:
+                  ListView(padding: const EdgeInsets.all(kAppMargin), children: <Widget>[
+                SimpleTextField(
+                  textEditingController: textarea,
+                  textInputType: TextInputType.number,
+                  labelText: 'Weight in (kg)',
                   onChanged: (value) {
                     setState(() {
                       weight = value;
                     });
                   },
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => handleSubmit(),
+                const SizedBox(height: kAppMargin),
+                SimpleElevatedButton(
+                  onPressed: () => validate(),
                   child: const Text('Submit'),
                 ),
               ]),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/weight_model.dart';
 import '../../providers/weight_provider.dart';
+import '../../widgets/pages_app_bar.dart';
 
 class WeightHistoryScreen extends StatelessWidget {
   WeightHistoryScreen({Key? key}) : super(key: key);
@@ -30,9 +31,7 @@ class WeightHistoryScreen extends StatelessWidget {
     final weightHistory = sortWeightHistoryByTime(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Weight History'),
-      ),
+      appBar: PagesAppBar(title: 'My Weight History'),
       body: ListView.separated(
           itemCount: weightHistory.length,
           separatorBuilder: (context, index) => const Divider(),

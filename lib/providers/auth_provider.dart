@@ -4,7 +4,6 @@ import 'package:tracker/providers/provider.dart';
 import 'package:tracker/transforms/init_store.dart';
 
 import '../models/user_model.dart';
-import 'preference_provider.dart';
 
 class AuthProvider extends ChangeNotifier implements AppProvider {
   @override
@@ -18,22 +17,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   bool isAuthenticated = false;
 
   AuthProvider({this.api, this.storage}) {
-    loadFromStore();
-  }
-
-  @override
-  void loadFromStore() async {
-    try {
-      final _user = await storage?.getDecodedString('user');
-      isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
-      user = User.fromJson(_user);
-    } catch (e) {
-      if (kDebugMode) {
-        print('store is empty');
-      }
-    } finally {
-      notifyListeners();
-    }
+    _loadFromStore();
   }
 
   _updateAppState(AppState _appState) {
@@ -41,7 +25,25 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
     notifyListeners();
   }
 
-  clear() async {
+  void _loadFromStore() async {
+    try {
+      user = User.fromJson(await storage?.getDecodedString('user'));
+      isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void _saveToStore() {
+    try {
+      storage?.setBool('isAuthenticated', isAuthenticated);
+      storage?.setEncodedString('user', user!.toJson());
+    } finally {
+      notifyListeners();
+    }
+  }
+
+   logout() async {
     isAuthenticated = false;
     await storage?.clear();
     notifyListeners();
@@ -50,11 +52,9 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   void userSignIn(payload) async {
     _updateAppState(AppState.isFetching);
     try {
-      final response = await api?.login(payload);
+      user = User.fromJson(await api?.login(payload));
       isAuthenticated = true;
-      user = User.fromJson(response);
-      storage?.setBool('isAuthenticated', isAuthenticated);
-      storage?.setEncodedString('user', response);
+      _saveToStore();
     } catch (e) {
       throw e.toString();
     } finally {
