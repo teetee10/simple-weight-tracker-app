@@ -7,7 +7,7 @@ String formatDateFromString(String date) {
   return formattedDate;
 }
 
-List sortListByTime<base>(listOfInstances) {
+List sortListByTime<T>(listOfInstances) {
   List sortByTime = listOfInstances;
   sortByTime.sort(
       (a, b) => formatDateFromString(b.time).compareTo(formatDateFromString(a.time)));

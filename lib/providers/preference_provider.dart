@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:tracker/api/user_api.dart';
 import 'package:tracker/providers/provider.dart';
-import 'package:tracker/transforms/init_store.dart';
+import 'package:tracker/transforms/store.dart';
 
 class PreferenceProvider extends ChangeNotifier implements AppProvider {
   @override

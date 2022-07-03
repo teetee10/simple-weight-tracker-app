@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/providers/provider.dart';
-import 'package:tracker/transforms/init_store.dart';
+import 'package:tracker/transforms/store.dart';
 
 import '../api/weight_api.dart';
 import '../models/weight_model.dart';

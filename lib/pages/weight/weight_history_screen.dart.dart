@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/weight_model.dart';
 import '../../providers/weight_provider.dart';
-import '../../transforms/date_tranforms.dart';
+import '../../transforms/date.dart';
 import '../../widgets/pages_app_bar.dart';
 
 class WeightHistoryScreen extends StatefulWidget {

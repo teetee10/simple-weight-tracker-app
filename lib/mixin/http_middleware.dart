@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 import '../env_config.dart';
-import '../transforms/init_store.dart';
+import '../transforms/store.dart';
 
 class HttpMiddleware {
   final String _baseUrl = EnvConfig.API_BASE_URL;

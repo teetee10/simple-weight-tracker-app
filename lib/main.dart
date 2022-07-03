@@ -8,7 +8,7 @@ import 'package:tracker/widgets/auth_wrapper.dart';
 
 import 'api/api.dart';
 import 'providers/preference_provider.dart';
-import 'transforms/init_store.dart';
+import 'transforms/store.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
