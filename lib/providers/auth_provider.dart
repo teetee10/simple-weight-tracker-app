@@ -27,9 +27,11 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
 
   void _loadFromStore() async {
     try {
-      final _user = await storage?.getDecodedString('auth');
-      user = _user != null ? User.fromJson(_user) : null;
-      isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
+      final keyExists = storage!.containsKey('auth');
+      if (keyExists) {
+        user = User.fromJson(await storage?.getDecodedString('auth'));
+        isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
+      }
     } finally {
       notifyListeners();
     }
@@ -50,8 +52,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   void userSignIn(payload) async {
     _updateAppState(AppState.isFetching);
     try {
-      final _user = await api?.login(payload);
-      user = _user != null ? User.fromJson(_user) : null;
+      user = User.fromJson(await api?.login(payload));
       isAuthenticated = true;
       _saveToStore();
     } catch (e) {
