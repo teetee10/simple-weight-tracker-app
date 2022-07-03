@@ -48,7 +48,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   }
 
   void userSignIn(payload) async {
-    _updateAppState(AppState.loading);
+    _updateAppState(AppState.isFetching);
     try {
       final response = await api?.login(payload);
       isAuthenticated = true;
@@ -63,7 +63,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   }
 
   void userSignup(payload) async {
-    _updateAppState(AppState.loading);
+    _updateAppState(AppState.isFetching);
     try {
       await api?.signup(payload);
     } catch (e) {

@@ -1,4 +1,4 @@
-enum AppState { loading, idle, onboarding }
+enum AppState { isFetching, idle, onboarding }
 
 abstract class AppProvider {
   final storage;

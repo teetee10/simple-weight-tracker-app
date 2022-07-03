@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/weight_provider.dart';
+import '../../widgets/app_snackbar.dart';
+import '../../widgets/control_wrapper.dart';
 
 class AddWeightScreen extends StatefulWidget {
   const AddWeightScreen({Key? key}) : super(key: key);
@@ -32,9 +34,8 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
 
   Map<String, dynamic>? getValidated() {
     if (weight == '') {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Please enter a weight'),
-      ));
+      AppSnackBar('Error', 'Please enter a weight', context);
+      return null;
     }
 
     final time = DateTime.now().toString();
@@ -43,61 +44,59 @@ class _AddWeightScreenState extends State<AddWeightScreen> {
 
   void handleSubmit() async {
     try {
-      textarea.clear();
       final payload = getValidated();
       await userWeight?.addToWeightHistory(payload);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Added weight'),
-      ));
+      textarea.clear();
+      AppSnackBar('success', 'added weight', context);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      AppSnackBar('Error', e.toString(), context, Colors.red);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Weight'),
-          actions: <Widget>[
-            IconButton(
-                icon: const Icon(
-                  Icons.list,
-                  semanticLabel: 'View History',
-                  color: Colors.white,
-                ),
-                onPressed: () => Navigator.pushNamed(context, weightHistoryRoute)),
-            IconButton(
-                icon: const Icon(
-                  Icons.logout,
-                  semanticLabel: 'View History',
-                  color: Colors.white,
-                ),
-                onPressed: () => logout())
-          ],
-        ),
-        body: Center(
-          child: Form(
-            child: ListView(padding: const EdgeInsets.all(20.0), children: <Widget>[
-              TextField(
-                controller: textarea,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Weight in (kg)'),
-                onChanged: (value) {
-                  setState(() {
-                    weight = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => handleSubmit(),
-                child: const Text('Submit'),
-              ),
-            ]),
+    return ControlWrapper<WeightProvider>(
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Add Weight'),
+            actions: <Widget>[
+              IconButton(
+                  icon: const Icon(
+                    Icons.list,
+                    semanticLabel: 'View History',
+                    color: Colors.white,
+                  ),
+                  onPressed: () => Navigator.pushNamed(context, weightHistoryRoute)),
+              IconButton(
+                  icon: const Icon(
+                    Icons.logout,
+                    semanticLabel: 'View History',
+                    color: Colors.white,
+                  ),
+                  onPressed: () => logout())
+            ],
           ),
-        ));
+          body: Center(
+            child: Form(
+              child: ListView(padding: const EdgeInsets.all(20.0), children: <Widget>[
+                TextField(
+                  controller: textarea,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: 'Weight in (kg)'),
+                  onChanged: (value) {
+                    setState(() {
+                      weight = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => handleSubmit(),
+                  child: const Text('Submit'),
+                ),
+              ]),
+            ),
+          )),
+    );
   }
 }

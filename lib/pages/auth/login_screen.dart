@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/weight_provider.dart';
+import '../../widgets/app_snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -36,9 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await auth.userSignIn(payload);
       await weight.fetchWeightHistory();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      AppSnackBar('error', e.toString(), context);
     }
   }
 

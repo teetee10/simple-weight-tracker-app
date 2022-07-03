@@ -1,7 +1,6 @@
 name: tracker
 description: simple weight tracker app
 
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -29,23 +28,18 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.2
+  environment_config: ^3.1.0
+  another_flushbar: ^1.10.29
   flutter:
     sdk: flutter
-  http: ^0.13.4
-  provider: ^6.0.3
-  environment_config: ^3.1.0
-  shared_preferences: ^2.0.15 
-  panara_dialogs: ^0.0.9
   flutter_spinkit: ^5.1.0
+  http: ^0.13.4
   intl: ^0.17.0
+  panara_dialogs: ^0.0.9
+  provider: ^6.0.3
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter

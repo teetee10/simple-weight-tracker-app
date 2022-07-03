@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tracker/constants.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../widgets/app_snackbar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -33,13 +32,13 @@ class _SignupScreenState extends State<SignupScreen> {
     Navigator.of(context).pushNamedAndRemoveUntil(homeRoute, (route) => false);
   }
 
-   Map<String, dynamic>? getValidated() {
+  Map<String, dynamic>? getValidated() {
     if (email == '' || password == '' || name == '') {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Please enter an email and password'),
-      )); 
+      ));
     }
-    return  {'email': email, 'password': password, 'name': name};
+    return {'email': email, 'password': password, 'name': name};
   }
 
   void handleSubmit() async {
@@ -48,9 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
       await auth.userSignup(payload);
       Navigator.of(context).pushNamedAndRemoveUntil(loginRoute, (route) => true);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
+      AppSnackBar('error', e.toString(), context);
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/pages/auth/login_screen.dart';
 import 'package:tracker/pages/auth/signup_screen.dart';
+import 'package:tracker/pages/ui-screen.dart';
 import 'package:tracker/pages/weight/add_weight_screen.dart'; 
 
 import 'constants.dart';
@@ -9,6 +10,8 @@ import 'pages/weight/weight_history_screen.dart.dart';
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case '/ui':
+        return MaterialPageRoute(builder: (_) => UiScreen());
       case loginRoute:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case signupRoute:

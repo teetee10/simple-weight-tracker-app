@@ -3,26 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import '../providers/auth_provider.dart';
-import '../providers/provider.dart';
-import 'loader.dart';
+import 'control_wrapper.dart';
 
-class AppWrapper<T extends AuthProvider> extends StatelessWidget {
+class AuthWrapper<T extends AuthProvider> extends StatelessWidget {
   final child;
-  const AppWrapper({Key? key, this.child}) : super(key: key);
+  const AuthWrapper({Key? key, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<T>(builder: (ctx, T arg, __) { 
+    return Consumer<T>(builder: (ctx, T arg, __) {
       if (arg.isAuthenticated) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.of(ctx).pushNamedAndRemoveUntil(addWeightRoute, (route) => false);
         });
-      } 
-      if (arg.appState == AppState.loading) {
-        return Spinkit();
-      } else {
-        return child;
       }
+
+      return ControlWrapper<T>(child: child);
     });
   }
 }

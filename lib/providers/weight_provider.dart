@@ -16,6 +16,12 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
   List<Weight>? weightHistory = [];
   WeightProvider({this.storage, this.api});
 
+
+  _updateAppState(AppState _appState) {
+    appState = _appState;
+    notifyListeners();
+  }
+
   void setWeightHistory(List<Weight> weight) {
     weightHistory = weight;
     notifyListeners();
@@ -41,9 +47,7 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
       await api?.updateWeight(payload);
     } catch (e) {
       throw e.toString();
-    } finally {
-      notifyListeners();
-    }
+    } 
   }
 
   void _addWeight(payload) async {
