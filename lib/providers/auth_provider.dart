@@ -51,7 +51,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
     _updateAppState(AppState.isFetching);
     try {
       final _user = await api?.login(payload);
-      user = _user ?? User.fromJson(_user);
+      user = _user != null ? User.fromJson(_user) : null;
       isAuthenticated = true;
       _saveToStore();
     } catch (e) {
