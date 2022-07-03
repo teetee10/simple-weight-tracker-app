@@ -8,7 +8,7 @@ class Api {
   static WeightApi weightApi = UseWeightData();
 
   Api.init() {
-    if (EnvConfig.DEVELOPMENT) {
+    if (!EnvConfig.DEVELOPMENT) {
       authApi = UseAuthApi();
       weightApi = UseWeightApi();
     }

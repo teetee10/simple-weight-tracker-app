@@ -21,7 +21,7 @@ class AppStore implements Store, SharedPreferences {
       final savedString = storage.getString(key);
       return jsonDecode(savedString!);
     } catch (e) {
-      throw "storage key:$key does not exist";
+      print("storage key:$key does not exist");
     }
   }
 

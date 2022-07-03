@@ -13,13 +13,8 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
   @override
   AppState? appState;
 
-  List<Weight>? weightHistory = [];
+  List<Weight> weightHistory = [];
   WeightProvider({this.storage, this.api});
-
-  _updateAppState(AppState _appState) {
-    appState = _appState;
-    notifyListeners();
-  }
 
   void setWeightHistory(List<Weight> weight) {
     weightHistory = weight;
@@ -27,9 +22,9 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
   }
 
   Future<void> addToWeightHistory(weight) async {
-    weightHistory?.add(Weight.fromJson(weight));
+    weightHistory.add(Weight.fromJson(weight));
     notifyListeners();
-    await _addWeight(weight);
+    await _createWeight(weight);
   }
 
   Future<void> fetchWeightHistory() async {
@@ -49,11 +44,11 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
     }
   }
 
-  Future<void> _addWeight(payload) async {
+  Future<void> _createWeight(payload) async {
     try {
       await api?.saveWeight(payload);
     } catch (e) {
-      weightHistory?.removeLast();
+      weightHistory.removeLast();
       throw e.toString();
     }
   }
