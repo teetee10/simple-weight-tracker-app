@@ -27,7 +27,7 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
 
   void _loadFromStore() async {
     try {
-      user = User.fromJson(await storage?.getDecodedString('user'));
+      user = User.fromJson(await storage?.getDecodedString('auth'));
       isAuthenticated = storage?.getBool('isAuthenticated') ?? false;
     } finally {
       notifyListeners();
@@ -35,15 +35,12 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
   }
 
   void _saveToStore() {
-    try {
-      storage?.setBool('isAuthenticated', isAuthenticated);
-      storage?.setEncodedString('user', user!.toJson());
-    } finally {
-      notifyListeners();
-    }
+    storage?.setBool('isAuthenticated', isAuthenticated);
+    storage?.setEncodedString('auth', user);
+    notifyListeners();
   }
 
-   logout() async {
+  logout() async {
     isAuthenticated = false;
     await storage?.clear();
     notifyListeners();
@@ -51,9 +48,9 @@ class AuthProvider extends ChangeNotifier implements AppProvider {
 
   void userSignIn(payload) async {
     _updateAppState(AppState.isFetching);
-    try {
+    try { 
       user = User.fromJson(await api?.login(payload));
-      isAuthenticated = true;
+      isAuthenticated = true; 
       _saveToStore();
     } catch (e) {
       throw e.toString();

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class Store {
-  Future<bool> setEncodedString(key, Map<String, dynamic> arg);
+  Future<bool> setEncodedString(key, dynamic arg);
   Future<dynamic> getDecodedString(key);
 }
 
@@ -19,8 +19,7 @@ class AppStore implements Store, SharedPreferences {
   Future<dynamic> getDecodedString(key) async {
     try {
       final savedString = storage.getString(key);
-      final json = jsonDecode(savedString!);
-      return json;
+      return jsonDecode(savedString!);
     } catch (e) {
       throw "storage key:$key does not exist";
     }
@@ -55,7 +54,7 @@ class AppStore implements Store, SharedPreferences {
 
   @override
   Future<bool> clear() {
-     return storage.clear();
+    return storage.clear();
   }
 
   @override

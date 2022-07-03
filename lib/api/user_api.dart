@@ -7,12 +7,12 @@ abstract class AuthApi<T> {
 
 class UseAuthApi extends HttpMiddleware implements AuthApi {
   @override
-  Future<Map<String, dynamic>> login(encodedParams) async {
+  Future<Map<String, dynamic>?> login(encodedParams) async {
     return await withPost('auth/login', encodedParams);
   }
 
   @override
-  Future<Map<String, dynamic>> signup(encodedParams) async {
+  Future<Map<String, dynamic>?> signup(encodedParams) async {
     return await withPost('auth/signup', encodedParams);
   }
 }

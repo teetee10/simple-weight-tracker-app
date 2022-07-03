@@ -3,7 +3,7 @@ import 'package:tracker/providers/provider.dart';
 import 'package:tracker/transforms/init_store.dart';
 
 import '../api/weight_api.dart';
-import '../models/weight_model.dart'; 
+import '../models/weight_model.dart';
 
 class WeightProvider extends ChangeNotifier implements AppProvider {
   @override
@@ -26,13 +26,13 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
     notifyListeners();
   }
 
-  Future<void> addToWeightHistory(weight) async { 
+  Future<void> addToWeightHistory(weight) async {
     weightHistory?.add(Weight.fromJson(weight));
     notifyListeners();
-    _addWeight(weight);
+    await _addWeight(weight);
   }
 
-  void fetchWeightHistory() async {
+  Future<void> fetchWeightHistory() async {
     try {
       final response = await api?.getWeightHistory();
       setWeightHistory(response!);
@@ -41,15 +41,15 @@ class WeightProvider extends ChangeNotifier implements AppProvider {
     }
   }
 
-  void updateWeightHistory(payload) async {
+  Future<void> updateWeightHistory(payload) async {
     try {
       await api?.updateWeight(payload);
     } catch (e) {
       throw e.toString();
-    } 
+    }
   }
 
-  void _addWeight(payload) async {
+  Future<void> _addWeight(payload) async {
     try {
       await api?.saveWeight(payload);
     } catch (e) {

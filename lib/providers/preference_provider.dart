@@ -15,16 +15,10 @@ class PreferenceProvider extends ChangeNotifier implements AppProvider {
   bool isOnboarded = false;
 
   PreferenceProvider({this.api, this.storage}) {
-    loadFromStore();
+    _loadFromStore();
   }
 
-  _updateAppState(AppState _appState) {
-    appState = _appState;
-    notifyListeners();
-  }
-
-  @override
-  void loadFromStore() {
+  void _loadFromStore() {
     isFirstUse = storage?.getBool('isFirstUse') ?? false;
     isOnboarded = storage?.getBool('isOnboarded') ?? false;
   }
@@ -32,12 +26,10 @@ class PreferenceProvider extends ChangeNotifier implements AppProvider {
   void setIsFirstUse() async {
     isFirstUse = true;
     await storage?.setBool('isFirstUse', isFirstUse);
-    _updateAppState(AppState.idle);
   }
 
   void setIsOnboarded() async {
     isOnboarded = true;
     await storage?.setBool('isOnboarded', isOnboarded);
-    _updateAppState(AppState.idle);
   }
 }

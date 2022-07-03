@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tracker/models/weight_model.dart';
 
 import '../mixin/http_middleware.dart';
@@ -10,14 +12,13 @@ abstract class WeightApi<T> {
 
 class UseWeightApi extends HttpMiddleware implements WeightApi {
   @override
-  Future<Map<String, dynamic>> saveWeight(encodedParams) async {
-    return await withPost('weight/add', encodedParams); 
+  Future<Map<String, dynamic>?> saveWeight(encodedParams) async {
+    return await withPost('weight/add', encodedParams);
   }
 
   @override
-  Future<Map<String, dynamic>> updateWeight(encodedParams) async {
+  Future<Map<String, dynamic>?> updateWeight(encodedParams) async {
     return await withPost('weight/update', encodedParams);
- 
   }
 
   @override
@@ -25,7 +26,7 @@ class UseWeightApi extends HttpMiddleware implements WeightApi {
     List<Weight> weightHistory = [];
     final response = await withGet('weight/history');
     if (response != null) {
-      response.map((e) => weightHistory.add(Weight.fromJson(e))).toList();
+      response.map((e) => {weightHistory.add(Weight.fromJson(e))}).toList()!;
     }
     return weightHistory;
   }
