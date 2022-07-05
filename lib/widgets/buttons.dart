@@ -188,7 +188,7 @@ class SimpleElevatedButton extends StatelessWidget {
       child: child,
       style: ElevatedButton.styleFrom(
         padding: padding,
-        primary: color ?? primary,
+        primary: color ?? kPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),

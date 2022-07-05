@@ -1,15 +1,15 @@
-import 'package:tracker/api/weight_api.dart';
+import 'package:tracker/api/wieght.dart';
 import 'package:tracker/env_config.dart';
 
-import 'user_api.dart';
+import 'index.dart';
 
 class Api {
-  static AuthApi authApi = UseAuthData();
+  static Auth authApi = AuthData();
   static WeightApi weightApi = UseWeightData();
 
   Api.init() {
     if (!EnvConfig.DEVELOPMENT) {
-      authApi = UseAuthApi();
+      authApi = AuthApi();
       weightApi = UseWeightApi();
     }
   }

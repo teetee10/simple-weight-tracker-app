@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:tracker/models/weight_model.dart';
+import 'package:tracker/models/weight.dart';
 
-import '../mixin/http_middleware.dart';
+import '../mixin/http.dart';
 
 abstract class WeightApi<T> {
   Future<T> saveWeight(encodedParams);

@@ -1,13 +1,14 @@
 import 'package:flutter/foundation.dart';
-import 'package:tracker/api/user_api.dart';
-import 'package:tracker/providers/provider.dart';
+import 'package:tracker/providers/type.dart';
 import 'package:tracker/transforms/store.dart';
+
+import '../api/index.dart';
 
 class PreferenceProvider extends ChangeNotifier implements AppProvider {
   @override
   final AppStore? storage;
   @override
-  final AuthApi? api;
+  final Auth? api;
   @override
   AppState? appState = AppState.idle;
 

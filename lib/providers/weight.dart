@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/providers/provider.dart';
+import 'package:tracker/providers/type.dart';
 import 'package:tracker/transforms/store.dart';
 
-import '../api/weight_api.dart';
-import '../models/weight_model.dart';
+import '../api/wieght.dart';
+import '../models/weight.dart';
 
 class WeightProvider extends ChangeNotifier implements AppProvider {
   @override

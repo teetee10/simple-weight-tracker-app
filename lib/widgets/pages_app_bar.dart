@@ -3,7 +3,7 @@ import 'package:tracker/constants/colors.dart';
 
 PreferredSizeWidget? PagesAppBar(
         {title = '',
-        backgroundColor = primary,
+        backgroundColor = kPrimary,
         centerTitle = true,
         leading: true,
         actions}) =>

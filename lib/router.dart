@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/pages/auth/login_screen.dart';
-import 'package:tracker/pages/auth/signup_screen.dart';
-import 'package:tracker/pages/ui-screen.dart';
-import 'package:tracker/pages/weight/add_weight_screen.dart'; 
+import 'package:tracker/pages/auth/login.dart';
+import 'package:tracker/pages/auth/signup.dart';
+import 'package:tracker/pages/ui.dart';
+import 'package:tracker/pages/weight/add_weight.dart'; 
 
 import 'constants/routes.dart';
-import 'pages/weight/weight_history_screen.dart.dart';
+import 'pages/weight/weight_history.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {

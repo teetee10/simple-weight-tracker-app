@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tracker/pages/home_screen.dart';
-import 'package:tracker/providers/auth_provider.dart';
-import 'package:tracker/providers/weight_provider.dart';
+import 'package:tracker/pages/home.dart';
+import 'package:tracker/providers/auth.dart';
+import 'package:tracker/providers/weight.dart';
 import 'package:tracker/router.dart';
 import 'package:tracker/widgets/auth_wrapper.dart';
 
 import 'api/api.dart';
-import 'providers/preference_provider.dart';
+import 'providers/preference.dart';
 import 'transforms/store.dart';
 
 void main() async {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
-import '../providers/auth_provider.dart';
-import '../providers/provider.dart';
+import '../providers/auth.dart';
+import '../providers/type.dart';
 import 'loader.dart';
 
 class ControlWrapper<T extends AppProvider> extends StatelessWidget {

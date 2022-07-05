@@ -21,7 +21,7 @@ class AppSnackBar {
         title: title?.toUpperCase(),
         backgroundColor: color!,
         showProgressIndicator: false,
-        progressIndicatorValueColor: const AlwaysStoppedAnimation<Color>(primary),
+        progressIndicatorValueColor: const AlwaysStoppedAnimation<Color>(kPrimary),
         progressIndicatorBackgroundColor: color,
         icon: const Icon(Icons.info_outline, color: Colors.white),
         isDismissible: true,

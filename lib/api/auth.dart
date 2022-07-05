@@ -1,11 +1,11 @@
-import '../mixin/http_middleware.dart';
+import '../mixin/http.dart';
 
-abstract class AuthApi<T> {
+abstract class Auth<T> {
   Future<T> login(encodedParams);
   Future<T> signup(encodedParams);
 }
 
-class UseAuthApi extends HttpMiddleware implements AuthApi {
+class AuthApi extends HttpMiddleware implements Auth {
   @override
   Future<Map<String, dynamic>?> login(encodedParams) async {
     return await withPost('auth/login', encodedParams);
@@ -17,7 +17,7 @@ class UseAuthApi extends HttpMiddleware implements AuthApi {
   }
 }
 
-class UseAuthData extends AuthApi {
+class AuthData extends Auth {
   @override
   Future<Map<String, dynamic>> login(encodedParams) async {
     return Future.delayed(const Duration(seconds: 2),

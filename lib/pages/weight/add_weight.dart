@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../constants/routes.dart';
 import '../../constants/sizes.dart';
-import '../../providers/auth_provider.dart';
-import '../../providers/weight_provider.dart';
+import '../../providers/auth.dart';
+import '../../providers/weight.dart';
 import '../../widgets/app_snackbar.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/control_wrapper.dart';

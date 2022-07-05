@@ -1,15 +1,15 @@
-import 'package:flutter/foundation.dart';
-import 'package:tracker/api/user_api.dart';
-import 'package:tracker/providers/provider.dart';
+import 'package:flutter/foundation.dart'; 
+import 'package:tracker/providers/type.dart';
 import 'package:tracker/transforms/store.dart';
 
-import '../models/user_model.dart';
+import '../api/index.dart';
+import '../models/user.dart';
 
 class AuthProvider extends ChangeNotifier implements AppProvider {
   @override
   final AppStore? storage;
   @override
-  final AuthApi? api;
+  final Auth? api;
   @override
   AppState? appState = AppState.idle;
 

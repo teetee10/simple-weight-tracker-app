@@ -9,7 +9,7 @@ Widget buildMaterialIconCircle(String imagePath, double size) {
     height: size,
     decoration: const BoxDecoration(
       shape: BoxShape.circle,
-      color: primaryLight,
+      color:kPrimaryLight,
     ),
     child: Align(
       alignment: Alignment.center,

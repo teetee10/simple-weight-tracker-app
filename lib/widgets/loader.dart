@@ -21,6 +21,6 @@ Widget Spinkit([color = Colors.transparent]) => Center(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                        color: primary,
+                        color: kPrimary,
                       ))))),
     );
